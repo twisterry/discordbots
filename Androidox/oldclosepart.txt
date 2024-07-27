@@ -1,0 +1,84 @@
+@tasks.loop(time=dt.time(1, 0, 0, 0))
+async def closesched():
+    guild = bot.get_guild(int(guildid))
+    role = discord.utils.get(guild.roles, id=int(closerole))
+    for member in guild.members:
+        if not member.bot:
+            await member.add_roles(role)
+            await asyncio.sleep(1)
+    channel = bot.get_channel(int(logch))
+    embed=discord.Embed(title="Androidox Benachrichtigung", description="Server Benachrichtigung", color=0xff0000)
+    embed.add_field(name="Server automatisch geschlossen", value="OK", inline=False)
+    embed.set_footer(text="Androidox - Session ID: " + sessionid)
+    await channel.send(embed=embed)
+    log("Server automatisch geschlossen!")
+
+@tasks.loop(time=dt.time(10, 0, 0, 0))
+async def opensched():
+    day = datetime.now().weekday()
+    if day < 5:
+        guild = bot.get_guild(int(guildid))
+        role = discord.utils.get(guild.roles, id=int(closerole))
+        for member in guild.members:
+            if not member.bot:
+                await member.remove_roles(role)
+                await asyncio.sleep(1)
+        channel = bot.get_channel(int(logch))
+        embed=discord.Embed(title="Androidox Benachrichtigung", description="Server Benachrichtigung", color=0xff0000)
+        embed.add_field(name="Server automatisch geöffnet", value="OK", inline=False)
+        embed.set_footer(text="Androidox - Session ID: " + sessionid)
+        await channel.send(embed=embed)
+        log("Server automatisch geoeffnet!")
+    
+@tasks.loop(time=dt.time(8, 0, 0, 0))
+async def openschedw():
+    day = datetime.now().weekday()
+    if day >= 5:
+        guild = bot.get_guild(int(guildid))
+        role = discord.utils.get(guild.roles, id=int(closerole))
+        for member in guild.members:
+            if not member.bot:
+                await member.remove_roles(role)
+                await asyncio.sleep(1)
+        channel = bot.get_channel(int(logch))
+        embed=discord.Embed(title="Androidox Benachrichtigung", description="Server Benachrichtigung", color=0xff0000)
+        embed.add_field(name="Server automatisch geöffnet", value="OK", inline=False)
+        embed.set_footer(text="Androidox - Session ID: " + sessionid)
+        await channel.send(embed=embed)
+        log("Server automatisch geoeffnet!")
+
+
+-----------------------------------------------------
+
+@admin.command(name="closeserver", description="Schließt den Server", guild_ids=[int(guildid)])
+async def closeserver(ctx):
+    role = discord.utils.get(ctx.guild.roles, id=int(closerole))
+    await ctx.send('Bitte warten....', delete_after=3)
+    for member in ctx.guild.members:
+        if not member.bot:
+            await member.add_roles(role)
+            await asyncio.sleep(1)
+    channel = bot.get_channel(int(logch))
+    await ctx.send('Server geschlossen!', delete_after=2)
+    embed=discord.Embed(title="Androidox Benachrichtigung", description="Server Benachrichtigung", color=0xff0000)
+    embed.add_field(name="Server geschlossen", value="OK", inline=False)
+    embed.set_footer(text="Androidox - Session ID: " + sessionid)
+    await channel.send(embed=embed)
+    
+
+@admin.command(name="openserver", description="Öffnet den Server", guild_ids=[int(guildid)])
+async def openserver(ctx):
+    await ctx.send('Bitte warten....', delete_after=3)
+    role = discord.utils.get(ctx.guild.roles, id=int(closerole))
+    for member in ctx.guild.members:
+        if not member.bot:
+            await member.remove_roles(role)
+    await ctx.send('Server geöffnet!', delete_after=2)
+    channel = bot.get_channel(int(logch))
+    embed=discord.Embed(title="Androidox Benachrichtigung", description="Server Benachrichtigung", color=0xff0000)
+    embed.add_field(name="Server geöffnet", value="OK", inline=False)
+    embed.set_footer(text="Androidox - Session ID: " + sessionid)
+    await channel.send(embed=embed)
+
+
+

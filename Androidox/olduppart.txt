@@ -1,0 +1,39 @@
+spinner = Spinner(datetime.now(timezone('Europe/Amsterdam')).strftime("> [%d.%m. - %H:%M] | Pruefe auf Updates "))
+upd = False
+while upd != True:
+    spinner.next()
+    r = requests.get(f'{apiurl}/bot/updates', params={'clientver': clientver}, headers={"Authentication": authkey})
+    data = json.loads(r.text)
+    spinner.next()
+    if data["status"] == "UPTODATE":
+        spinner.next()
+        print('')
+        log('Keine Updates verfügbar')
+        upd = True
+        break
+    else:
+        spinner.next() 
+        print('')
+        log('Updates verfügbar')
+        log('Changelog laden...')
+        r = requests.get(f'{apiurl}/bot/updates/chglog', params={'clientver': clientver}, headers={"Authentication": authkey})
+        print(f'>>> {r.text}')
+        yno = input('Fortfahren? (j/n) ')
+        if yno == "n":
+            pass
+        elif yno == "j":
+            log('Updates laden...')
+            log(data['updateurl'])
+            opener = urllib.request.build_opener()
+            opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+            urllib.request.install_opener(opener)
+            urllib.request.urlretrieve(data["updateurl"], 'update.zip', MyProgressBar())
+            with zipfile.ZipFile('update.zip', 'r') as zip_ref:
+                zip_ref.extractall('.')
+            log('Neustart...')
+            os.remove('update.zip')
+            python = sys.executable
+            os.execl(python, python, * sys.argv)
+        else:
+            yno = input('Fortfahren? (j/n) ')
+        

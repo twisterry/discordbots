@@ -1,0 +1,28 @@
+guildid: SERVERID
+loglevel: 1 #Loglevel 1 = alles, 0 = nur Server geöffnet/geschlossen nachrichten
+botid: ID # Snowflake id des Bots
+bottoken: 'ENTERYOUR TOKEN HERE'
+
+clientver: '1.7.4' # Software Revision
+roles:
+  acceptrole: 768585328751280179 # Rolle, welche beim akzeptieren der Regeln vergeben wird
+  closerole: 992540203178807467 # Rolle, die beim schließen des Servers vergeben wird
+
+channels:
+  welcomech: 805907111254294598 # Kanal für Willkommensnachrichten
+  logch:  993103430031777873 # Kanal für Bot-logs
+  mcch: 992422263938891816 # Sprachkanal für Minecraft Server
+  rulech:  805410870028009482 # Kanal für Regeln (und Bewertungen)
+  statch:  1002988540633829386 # Kanal fuer Statistiken
+  imprvch:  1094957314269782116 # Kanal für Verbesserungsvorschläge (Mods)
+
+msgid:
+  statmsg: 1002988625920790538
+
+minecraft:
+  serverip: '10.10.10.25' # Server IP
+  rconport: 25575 # RCON Port
+  rconpass: 'lol1'
+
+messages:
+  rulemsg: 'Wenn du mit den Regeln einverstanden bist, klicke bitte auf den grünen Button.' # Nachricht, welche über dem grünen Button steht
